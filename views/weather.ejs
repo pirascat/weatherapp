@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="./stylesheets/style.css">
+    <script src="https://kit.fontawesome.com/3bf4e8c766.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+   integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+   crossorigin=""/>
+   <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+   integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+   crossorigin=""></script>
+    <title>WeatherApp</title>
+</head>
+<body>
+
+
+    <!-- HEADER -->
+    <nav class=" header navbar navbar-light bg-dark">
+        Weather App
+       <a class="logout" href="./login.html">Deconnexion</a>
+   </nav> 
+
+    <div class = "container">
+        <div class = "row">
+            <!-- FORMULAIRE POUR AJOUTER UNE VILLE -->
+            <div class = "col-10 col-lg-8 d-flex justify-content-end offset-lg-3">
+                <form class="form-inline" method= "POST" action = "/add-city">
+                    <div class="form-group mx-sm-3 mb-2">
+                    <input type="text" class="form-control" id="inputPassword2" name ="cityName" placeholder="Enter city name" autocomplete="off">
+                    </div>
+                    <button type="submit" class="btn btn-warning">Add</button>
+                </form>
+            </div>
+           <!-- IMAGE DE LA MAP -->
+            <div class = "col-10 col-lg-6">
+                <div id="mapid"></div>
+            </div>
+            <!-- LISTE DES VILLES -->
+            <div class = "col-10 col-lg-6">
+                <% if (cityList.length === 0){  %>
+                    <h3>No cities found</h3>    
+                    <% } else {%> 
+                <div class = "d-flex justify-content-center">
+                    <a type="button" href = "/update-data" class="btn btn-outline-dark"><i class="fas fa-sync-alt"></i>Update data</a>
+                </div>
+                <% if (erreur){%>
+                    <p><%= erreur %></p>
+                <%}%>
+                <ul class="list-group">
+                    <% for (var i = 0; i < cityList.length; i++){ %>
+                        <li class="list-group-item d-flex justify-content-between" data-longitude = "<%= cityList[i].longitude %>" data-latitude = "<%= cityList[i].latitude %>" data-cityname = "<%= cityList[i].cityName %>">
+                            <p class = "alignement-text">
+                                <%= cityList[i].cityName %>
+                            </p>
+                            <div class = "d-flex justify-content-around boite-temp">
+                                <p class = "element-temp">
+                                    <%= cityList[i].meteo %>
+                                </p>
+                                <img src = '<%= cityList[i].image %>' />
+                                <span class="badge badge-pill badge-warning element-temp"><%= cityList[i].tempMax %>°C</span>
+                                <span class="badge badge-pill badge-secondary element-temp"><%= cityList[i].tempMin %>°C</span>
+                            </div>
+                            <a type="button" href ="/delete-city?id=<%= cityList[i]._id %>&index=<%= i %>" class="btn btn-outline-warning border-0"><i class="far fa-times-circle"></i></a>
+                        </li>
+                    <%    
+                    } %>
+                </ul>
+           </div>
+           <% } %>
+       </div>
+   </div>
+
+
+   <!-- GRID -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <script src = "/javascripts/script.js"></script>
+</body>
+</html>
